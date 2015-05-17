@@ -33,12 +33,6 @@ public class EmailThread implements Runnable{
 		this.body = body;
 	}
 	public void run(){
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		this.sender = new EmailSender(host, from_address, to_address, subject, body);
 		try {
 			this.sender.send(); // send the email
