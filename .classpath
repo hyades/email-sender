@@ -1,0 +1,12 @@
+<classpath>
+  <classpathentry kind="src" path="src/main/scala" output="target/scala-2.10/classes"/>
+  <classpathentry kind="src" path="src/main/java" output="target/scala-2.10/classes"/>
+  <classpathentry kind="src" path="src/test/scala" output="target/scala-2.10/test-classes"/>
+  <classpathentry kind="src" path="src/test/java" output="target/scala-2.10/test-classes"/>
+  <classpathentry kind="lib" path="/Users/aahuja/.ivy2/cache/mysql/mysql-connector-java/jars/mysql-connector-java-5.1.35.jar"/>
+  <classpathentry kind="lib" path="/Users/aahuja/.ivy2/cache/com.typesafe/config/bundles/config-1.2.1.jar"/>
+  <classpathentry kind="lib" path="/Users/aahuja/.ivy2/cache/javax.mail/mail/jars/mail-1.4.jar"/>
+  <classpathentry kind="lib" path="/Users/aahuja/.ivy2/cache/javax.activation/activation/jars/activation-1.1.jar"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+  <classpathentry kind="output" path="bin"/>
+</classpath>
