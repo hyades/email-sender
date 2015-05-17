@@ -21,8 +21,14 @@ class Main {
     	Integer max_retries = conf.getInt("thread.max_retries");
     	max_retries++;
     	
-    	Integer maxEmailRunning = conf.getInt("thread.concurrency"); 
-    	AtomicInteger emailRunning = new AtomicInteger(); // maintain a count of running emails
+    	/*
+    	 * emailRunning maintains count of concurrent threads running at an instance
+    	 * More threads are added if they are less than the max possible
+    	 * emailRunning is Atomic to avoid context switching issues
+    	 */
+    	
+    	Integer maxEmailRunning = conf.getInt("thread.concurrency");
+    	AtomicInteger emailRunning = new AtomicInteger();
     	
     	Connection conn = null;
 		try {
@@ -35,16 +41,18 @@ class Main {
         	if(emailRunning.get() < maxEmailRunning){ // only run if less number of threads are running
 	        	ResultSet pendingEmails = null;
 				try {
-					
 					pendingEmails = DBConnection.fetchPendingEmails(conn, maxEmailRunning - emailRunning.get(), max_retries); // fetch some emails from db which are pending
 					while(pendingEmails.next()){
-						emailRunning.incrementAndGet();
+						emailRunning.incrementAndGet(); // count one thread in
+						
 						Integer id = pendingEmails.getInt("id");
 						String from_address = pendingEmails.getString("from_email_address");
 						String to_address = pendingEmails.getString("to_email_address");
 						String subject = pendingEmails.getString("subject");
 						String body = pendingEmails.getString("body");
-						DBConnection.setStatusRunning(conn, id);
+						
+						DBConnection.setStatusRunning(conn, id); // frees lock set my fetchPendingEmails after update
+						
 						// create thread for each email
 						EmailThread emailThread = new EmailThread(host, id, emailRunning, conn, from_address, to_address, subject, body);
 						emailThread.start();

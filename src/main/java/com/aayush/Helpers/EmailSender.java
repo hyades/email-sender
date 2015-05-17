@@ -15,9 +15,12 @@ import javax.mail.internet.MimeMessage;
  * @author aahuja
  */
 
+
+/*
+ * A standard Email Sending Helper
+ */
 public class EmailSender {
 	
-	private String host;
 	private String from_address;
 	private String to_address;
 	private String subject;
@@ -34,7 +37,9 @@ public class EmailSender {
 		props.put("mail.smtp.host", host);
 		this.session = Session.getInstance(props);
 	}
-	
+	/*
+	 * Standard SMTP sending method
+	 */
 	public void send() throws MessagingException{
 		
 		MimeMessage msg = new MimeMessage(session);

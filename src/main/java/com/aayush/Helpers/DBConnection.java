@@ -12,6 +12,11 @@ import com.typesafe.config.ConfigFactory;
  * @author aahuja
  */
 
+
+/*
+ * Helper methods to help in communicating with Database
+ * 
+ */
 public class DBConnection {
 	private static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
 	private static Config conf = ConfigFactory.load();
@@ -25,6 +30,11 @@ public class DBConnection {
 	 * status = 1 -> failed/not sent
 	 * status > 1 -> not sent / failed(went for retry)
 	 * status = -1 -> sending state
+	 */
+	
+	/*
+	 * Fetch pending email. Locks the rows till they are updated.
+	 * Emails which have had more than max_retries retries are discarded.
 	 */
 	public static ResultSet fetchPendingEmails(Connection conn, Integer count, Integer max_retries){
 		
@@ -40,6 +50,10 @@ public class DBConnection {
 		return rs;
 	}
 	
+	
+	/*
+	 * Set the status of a row as Running (status = -1)
+	 */
 	public static void setStatusRunning(Connection conn, Integer id){
 		String query = "UPDATE emailqueue SET status=-1 WHERE id=?";
 		try {
@@ -51,6 +65,10 @@ public class DBConnection {
 		}
 	}
 	
+	
+	/*
+	 * Set the status of a row as Sent (status = 0)
+	 */
 	public static void setStatusSent(Connection conn, Integer id){
 		String query = "UPDATE emailqueue SET status=0 WHERE id=?";
 		try {
@@ -62,6 +80,9 @@ public class DBConnection {
 		}
 	}
 	
+	/*
+	 * Set the status of a row as Failed (status > 1)
+	 */
 	public static void setStatusFailed(Connection conn, Integer id){
 		String query = "UPDATE emailqueue SET status=status+1 WHERE id=?";
 		try {

@@ -9,6 +9,10 @@ import javax.mail.MessagingException;
  * @author aahuja
  */
 
+/*
+ * Thread to send an email
+ */
+
 public class EmailThread implements Runnable{
 	
 	private Thread thread;
@@ -32,6 +36,14 @@ public class EmailThread implements Runnable{
 		this.subject = subject;
 		this.body = body;
 	}
+	
+	/*
+	 * Runnable.run()
+	 * Sends email in the thread
+	 * If success sets status as sent
+	 * If failed sets status as failed
+	 * Decrements emailRunning by one on completion
+	 */
 	public void run(){
 		this.sender = new EmailSender(host, from_address, to_address, subject, body);
 		try {
@@ -47,6 +59,9 @@ public class EmailThread implements Runnable{
 		
 	}
 	
+	/*
+	 * Gets the thread going
+	 */
 	public void start() {
 		if(thread == null){
 			thread = new Thread(this);
